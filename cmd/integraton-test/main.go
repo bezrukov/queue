@@ -8,7 +8,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -40,31 +39,30 @@ func runTest() error {
 		goPath = build.Default.GOPATH
 	}
 
-	log.Printf("Compiling queue")
-	out, err := exec.Command("go", "install", "-v", "github.com/bezrukov/queue").CombinedOutput()
-	if err != nil {
-		log.Printf("Failed to build: %v (out: %s)", err, out)
-	}
+	// log.Printf("Compiling queue")
+	// out, err := exec.Command("go", "install", "-v", "github.com/bezrukov/queue").CombinedOutput()
+	// if err != nil {
+	// 	log.Printf("Failed to build: %v (out: %s)", err, out)
+	// }
 
 	// TODO: make port random
 	port := 8080 // "test" in l33t
 
 	// TODO: make db path random
-	dbPath := "/tmp/queue.db"
-	os.Remove(dbPath)
+	//dbPath := "/tmp/queue-hold"
 
 	log.Printf("Running queue on port %d", port)
 
-	cmd := exec.Command(
-		fmt.Sprintf("%s/bin/queue", goPath),
-		fmt.Sprintf("--filename=%s", dbPath),
-		fmt.Sprintf("--port=%d", port),
-	)
+	// cmd := exec.Command(
+	// 	fmt.Sprintf("%s/bin/queue", goPath),
+	// 	fmt.Sprintf("--dirname=%s", dbPath),
+	// 	fmt.Sprintf("--port=%d", port),
+	// )
 
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Start()
-	defer cmd.Process.Kill()
+	// cmd.Stdout = os.Stdout
+	// cmd.Stderr = os.Stderr
+	// cmd.Start()
+	// defer cmd.Process.Kill()
 
 	log.Printf("Waiting for the port localhost: %d to open", port)
 
