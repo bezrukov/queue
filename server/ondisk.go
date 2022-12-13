@@ -8,8 +8,6 @@ import (
 	"sync"
 )
 
-// TODO: limit the max message size too
-const readBlockSize = 1024 * 1024
 const maxFileChunkSize = 20 * 1024 * 1024 // bytes
 
 // OnDisk stores all the data on disk
@@ -36,7 +34,7 @@ func (s *OnDisk) Write(msgs []byte) error {
 	s.Lock()
 	defer s.Unlock()
 
-	if s.lastChunk == "" || (s.lastChunkSize+uint64(len(msgs)) > maxInMemoryChunkSize) {
+	if s.lastChunk == "" || (s.lastChunkSize+uint64(len(msgs)) > maxFileChunkSize) {
 		s.lastChunk = fmt.Sprintf("chunk%d", s.lastChunkIdx)
 		s.lastChunkSize = 0
 		s.lastChunkIdx++
